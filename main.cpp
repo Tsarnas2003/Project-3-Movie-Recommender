@@ -12,6 +12,7 @@ class Movie {
         vector<string> genres;
         int runtime;
         bool isAdult;
+        int rank;
 
     public:
         Movie(string title, string year, vector<string> genres, int runtime, bool isAdult) {
@@ -20,6 +21,7 @@ class Movie {
             this->genres = genres;
             this->runtime = runtime;
             this->isAdult = isAdult;
+            rank = 0;
         }
 };
 
@@ -98,7 +100,7 @@ int main()
     cout << "\n";
 
     // pick random movie from final list
-    srand(time(0));
+    //srand(time(0));
     int randIndex = rand() % finalMovies.size();
 
     cout << "Your movie is: " + movie << endl;
