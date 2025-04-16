@@ -23,6 +23,7 @@ class Movie {
             this->isAdult = isAdult;
             rank = 0;
         }
+
 };
 
 int main() 
@@ -78,22 +79,23 @@ int main()
     string answer4;
     string answer5;
 
-    cout << "1) What genre";
+    cout << "1) What genre ?"; // maybe give a list of options for this one and let user do multiple
     cin >> answer1;
-    cout << "2) What runtime (long or short)";
+    cout << "2) What runtime (long or short or medium)";  // <90 min = short, 90-120 = medium, >120 = long
     cin >> answer2;
     cout << "3) what release year (last 5 years, last 10 years, doesnt matter)";
     cin >> answer3;
-    cout << "4) List of actors";
+    cout << "4) What rating (is the movie adult)?"; // boolean
     cin >> answer4;
-    cout << "5) What rating (is the movie adult)?";
-    cin >> answer5;
+    cout << "5) Do you want something lighthearted or serious"; // lighthearted = comedy,animation, romance, family
+    cin >> answer5;                                             // serious = drama, thriller, War, Crime, Horror
     
     // cout << "Animated or live-action"; // "animation is listed as a genre"
+    //
     // cout << "What type? (movie, episode, short)";
 
 
-
+// another question to help
 
     cout << "\n";
     cout << "------------------------------------------------------------" << endl;
