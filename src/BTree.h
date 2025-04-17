@@ -1,46 +1,44 @@
+#ifndef BTREE_H
+#define BTREE_H
+
 #include <iostream>
+
+#include "Movie.h"
 
 using namespace std;
 
 // B-Tree implementation from: https://www.programiz.com/dsa/b-tree
 
 class TreeNode {
-    int *keys;
+    Movie** keys;
     int t;
-    TreeNode **C;
+    TreeNode** C;
     int n;
     bool leaf;
   
     public:
         TreeNode(int temp, bool bool_leaf);
     
-        void insertNonFull(int k);
-        void splitChild(int i, TreeNode *y);
+        void insertNonFull(Movie k);
+        void splitChild(int i, TreeNode* y);
         void traverse();
-    
-        TreeNode *search(int k);
+        Movie* traverseGetLast();
+        TreeNode* search(Movie k);
     
         friend class BTree;
 };
   
 class BTree {
-    TreeNode *root;
+    TreeNode* root;
     int t;
   
     public:
-        BTree(int temp) {
-            root = NULL;
-            t = temp;
-        }
-    
-        void traverse() {
-            if (root != NULL)
-                root->traverse();
-        }
-    
-        TreeNode *search(int k) {
-            return (root == NULL) ? NULL : root->search(k);
-        }
-    
-        void insert(int k);
+        BTree(int temp);
+
+        void insert(Movie k);
+        void traverse();
+        Movie* getLast();
+        TreeNode* search(Movie k);
 };
+
+#endif // BTREE_H

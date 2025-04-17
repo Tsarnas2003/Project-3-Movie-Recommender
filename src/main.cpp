@@ -96,24 +96,22 @@ int main()
     cout << "\n";
     cout << "------------------------------------------------------------" << endl;
     cout << "\n";
-
-    string movie = "movie_name";
+    
+    BTree t(3); // switch to 50 once you get bigger data set
+    Movie finalMovie = *t.getLast();
 
     // pick random movie from final list
     //srand(time(0));
     //int randIndex = rand() % finalMovies.size();
 
-    BTree t(3);
 
     for(Movie m : movies) {
         m.updateRank(genres, answer3, answer4, answer2, answer5);
-        t.insert(m.getRank());
-        cout << m.getTitle() << " " << m.getRank() << endl;
+        t.insert(m);
+        //cout << m.getTitle() << " " << m.getRank() << endl;
     }
 
-    cout << "Your movie is: " + movie << endl;
-
-    t.traverse();
+    cout << "Your movie is: " + finalMovie.getTitle() + " " + to_string(finalMovie.getRank()) << endl;
 
     return 0;
 }
