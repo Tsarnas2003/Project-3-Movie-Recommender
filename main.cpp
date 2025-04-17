@@ -1,7 +1,11 @@
 // This should be in the issue1 branch
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <string>
+#include <set>
+#include <algorithm>
+#include <sstream>
 
 using namespace std;
 
@@ -9,7 +13,7 @@ class Movie {
     private:
         string title;
         string year;
-        vector<string> genres;
+        set<string> genres;
         int runtime;
         bool isAdult;
         int rank;
@@ -18,13 +22,104 @@ class Movie {
         Movie(string title, string year, vector<string> genres, int runtime, bool isAdult) {
             this->title = title;
             this->year = year;
-            this->genres = genres;
+            for(string g : genres) {
+                this->genres.insert(g);
+            }
             this->runtime = runtime;
             this->isAdult = isAdult;
             rank = 0;
         }
 
+
+        set<string> getGenres() {
+            return genres;
+        }
+
+        string getTitle() {
+            return title;
+        }
+        int getRuntime() {
+            return runtime;
+        }
+
+        string getYear() {
+            return year;
+        }
+
+        bool getIsAdult() {
+            return isAdult;
+        }
+
+        int getRank() {
+            return rank;
+        }
+
+        void addRank(int n) {
+            rank += n;
+        }
+
+
+
+
 };
+
+
+void updateRanks(Movie &movie, set<string> genre, string range, string rating,string runTime, string serious) {
+    int currentYear = 2025;
+    for(string gen : genre) {
+        if(movie.getGenres().count(gen) == 1) {            // updates for genres
+            movie.addRank(5);
+        }
+    }
+
+
+
+
+    if (range == "10") {
+        if((currentYear - stoi(movie.getYear())) <= 10) {
+            movie.addRank(3);
+        }                                                                      // updates for year
+
+    } else if (range == "5") {
+        if((currentYear - stoi(movie.getYear())) <= 5) {
+            movie.addRank(3);
+        }
+    }
+
+
+
+    if(rating == "yes") {
+        if(movie.getIsAdult()) {
+            movie.addRank(3);
+        }                                                                   // updates for isAdult
+    } else if(rating == "no") {
+        if(!movie.getIsAdult()) {
+            movie.addRank(3);
+        }
+    }
+
+
+    if(runTime == "short") {
+        if(movie.getRuntime() <= 90) {
+            movie.addRank(3);
+        }
+    } else if (runTime == "long") {
+        if(movie.getRuntime() <= 120) {
+            movie.addRank(3);                               // updates for runtime
+        }
+    }
+    else if (runTime == "medium") {
+        if(movie.getRuntime() >= 90 && movie.getRuntime() <= 120) {
+            movie.addRank(3);
+        }
+    }
+
+
+
+
+
+
+}
 
 int main() 
 {
@@ -73,26 +168,50 @@ int main()
     string movie = "movie_name";
     vector<string> finalMovies;
 
+    set<string> genres;
+
+
     string answer1;
     string answer2;
     string answer3;
     string answer4;
     string answer5;
 
-    cout << "1) What genre ?"; // maybe give a list of options for this one and let user do multiple
-    cin >> answer1;
-    cout << "2) What runtime (long or short or medium)";  // <90 min = short, 90-120 = medium, >120 = long
+    cout << "1) What genre (Choose from Animation, Drama, Adventure, Comedy, Horror, Romance, Action, Family)?\n "; // maybe give a list of options for this one and let user do multiple
+    cout << "Enter multiple genres seperated by comas (e.g, Action,Comedy)\n";
+    getline(cin, answer1);
+    stringstream ss(answer1);
+    string choice;
+    while(getline(ss, choice, ',')) {
+        choice.erase(remove_if(choice.begin(), choice.end(), ::isspace),choice.end());
+        genres.insert(choice);
+
+    }
+
+
+    //cin >> answer1;
+    cout << "2) What runtime (long or short or medium)\n";  // <90 min = short, 90-120 = medium, >120 = long
     cin >> answer2;
-    cout << "3) what release year (last 5 years, last 10 years, doesnt matter)";
+    cout << "3) what release range do you prefer?\n";
+    cout << "Options: Last 5 years, Last 10 years, any\n";
+    cout << "Enter 5, 10, or any\n";
     cin >> answer3;
-    cout << "4) What rating (is the movie adult)?"; // boolean
+    cout << "4) What rating (is the movie adult)?\n"; // boolean
     cin >> answer4;
-    cout << "5) Do you want something lighthearted or serious"; // lighthearted = comedy,animation, romance, family
+    cout << "5) Do you want something lighthearted or serious\n"; // lighthearted = comedy,animation, romance, family
     cin >> answer5;                                             // serious = drama, thriller, War, Crime, Horror
     
     // cout << "Animated or live-action"; // "animation is listed as a genre"
     //
     // cout << "What type? (movie, episode, short)";
+
+    // Testing
+
+    for (auto g : genres) cout << g << "\n";
+    cout << answer2 << endl;
+    cout << answer3 << endl;
+    cout << answer4 << endl;
+    cout << answer5 << endl;
 
 
 // another question to help
@@ -103,9 +222,31 @@ int main()
 
     // pick random movie from final list
     //srand(time(0));
-    int randIndex = rand() % finalMovies.size();
+    //int randIndex = rand() % finalMovies.size();
 
     cout << "Your movie is: " + movie << endl;
 
+
+
+    // testing update ranks
+
+    for(Movie& m : movies) {
+        updateRanks(m,genres, answer3, answer4, answer2, answer5);
+    }
+
+
+    for (Movie m : movies) {
+        cout << m.getTitle() << " " << m.getRank() << endl;
+    }
+
+
+
     return 0;
 }
+
+
+
+
+
+
+
