@@ -1,3 +1,6 @@
+#ifndef MOVIE_H
+#define MOVIE_H
+
 #include <string>
 #include <vector>
 #include <set>
@@ -26,3 +29,5 @@ class Movie {
         void addRank(int n);
         void updateRank(set<string> inputGenres, string inputRange, string inputRating, string inputRunTime, string inputSeriou);
 };
+
+#endif // MOVIE_H
