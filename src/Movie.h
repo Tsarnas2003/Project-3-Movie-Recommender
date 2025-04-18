@@ -14,26 +14,23 @@ class Movie {
         set<string> genres;
         int runtime;
         bool isAdult;
+        string type;
+
         int rank;
 
     public:
-        Movie() {
-            title = "";
-            year = "";
-            genres.clear();
-            runtime = 0;
-        }
-        Movie(string title, string year, vector<string> genres, int runtime, bool isAdult);
+        Movie(string title, string year, vector<string> genres, int runtime, bool isAdult, string type);
 
         string getTitle();
         string getYear();
         set<string> getGenres();
         int getRuntime();
         bool getIsAdult();
+        string getType();
+        
         int getRank();
-
         void addRank(int n);
-        void updateRank(set<string> inputGenres, string inputRange, string inputRating, string inputRunTime, string inputSeriou);
+        void updateRank(set<string> inputGenres, string inputYear, string inputIsAdult, string inputRuntime, string inputType);
 };
 
 #endif // MOVIE_H
