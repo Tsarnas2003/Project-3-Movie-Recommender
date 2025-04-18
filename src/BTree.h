@@ -24,7 +24,6 @@ class TreeNode {
         void splitChild(int i, TreeNode* y);
         void traverse();
         vector<Movie*> getMovieRecs();
-        TreeNode* search(Movie* k);
     
         friend class BTree;
 };
@@ -39,7 +38,6 @@ class BTree {
         void insert(Movie* k);
         void traverse();
         vector<Movie*> getLast();
-        TreeNode* search(Movie* k);
 };
 
 #endif // BTREE_H

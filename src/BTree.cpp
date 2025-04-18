@@ -45,24 +45,7 @@ vector<Movie*> TreeNode::getMovieRecs() {
 
     return movieRecs;
 }
-  
-TreeNode* TreeNode::search(Movie* k) {
-    int i = 0;
-    while (i < n && k->getRank() > keys[i]->getRank()) {
-        i++;
-    }
-  
-    if (keys[i]->getRank() == k->getRank()) {
-        return this;
-    }
-  
-    if (leaf == true) {
-        return NULL;
-    }
-  
-    return C[i]->search(k);
-}
-  
+
 void TreeNode::insertNonFull(Movie* k) {
     int i = n - 1;
   
@@ -131,14 +114,6 @@ void BTree::traverse() {
     if (root != NULL) {
         root->traverse();
     }
-}
-
-TreeNode* BTree::search(Movie* k) {
-    if (root == NULL) {
-        return NULL;
-    }
-    return root->search(k);
-    // return (root == NULL) ? NULL : root->search(k);
 }
 
 void BTree::insert(Movie* k) {
