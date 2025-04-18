@@ -12,6 +12,8 @@ TreeNode::TreeNode(int t1, bool leaf1) {
     n = 0;
 }
   
+vector<Movie*> movies; // stupid global variable (have to find a solution to this)
+
 void TreeNode::traverse() {
     int i;
 
@@ -19,39 +21,38 @@ void TreeNode::traverse() {
         if (leaf == false) {
             C[i]->traverse();
         }
-        cout << " " << keys[i]->getTitle();
-    }
-  
-    if (leaf == false) {
-        C[i]->traverse();
-    }
-}
-
-Movie* TreeNode::traverseGetLast() {
-    int i;
-    vector<Movie*> movies; 
-
-    for (i = 0; i < n; i++) {
-        if (leaf == false) {
-            C[i]->traverse();
-        }
+        cout << keys[i]->getTitle() << " " << keys[i]->getRank() << endl;
         movies.push_back(keys[i]);
     }
   
     if (leaf == false) {
         C[i]->traverse();
     }
+}
 
-    return movies.back();
+vector<Movie*> TreeNode::getMovieRecs() {
+    int i;
+    int maxRank;
+    vector<Movie*> movieRecs;
+
+    maxRank = movies.back()->getRank();
+
+    while (!movies.empty() && movies.back()->getRank() == maxRank) {
+        // now the best movie is at the front of the movieRecs vector
+        movieRecs.push_back(movies.back());
+        movies.pop_back();
+    }
+
+    return movieRecs;
 }
   
-TreeNode* TreeNode::search(Movie k) {
+TreeNode* TreeNode::search(Movie* k) {
     int i = 0;
-    while (i < n && k.getRank() > keys[i]->getRank()) {
+    while (i < n && k->getRank() > keys[i]->getRank()) {
         i++;
     }
   
-    if (keys[i]->getRank() == k.getRank()) {
+    if (keys[i]->getRank() == k->getRank()) {
         return this;
     }
   
@@ -62,27 +63,27 @@ TreeNode* TreeNode::search(Movie k) {
     return C[i]->search(k);
 }
   
-void TreeNode::insertNonFull(Movie k) {
+void TreeNode::insertNonFull(Movie* k) {
     int i = n - 1;
   
     if (leaf == true) {
-        while (i >= 0 && keys[i]->getRank() > k.getRank()) {
+        while (i >= 0 && keys[i]->getRank() > k->getRank()) {
             keys[i + 1] = keys[i];
             i--;
         }
   
-        keys[i + 1] = &k;
+        keys[i + 1] = k;
         n = n + 1;
     } 
     else {
-        while (i >= 0 && keys[i]->getRank() > k.getRank()) {
+        while (i >= 0 && keys[i]->getRank() > k->getRank()) {
             i--;
         }
   
         if (C[i + 1]->n == 2 * t - 1) {
             splitChild(i + 1, C[i + 1]);
   
-            if (keys[i + 1]->getRank() < k.getRank()) {
+            if (keys[i + 1]->getRank() < k->getRank()) {
                 i++;
             }
         }
@@ -132,7 +133,7 @@ void BTree::traverse() {
     }
 }
 
-TreeNode* BTree::search(Movie k) {
+TreeNode* BTree::search(Movie* k) {
     if (root == NULL) {
         return NULL;
     }
@@ -140,10 +141,10 @@ TreeNode* BTree::search(Movie k) {
     // return (root == NULL) ? NULL : root->search(k);
 }
 
-void BTree::insert(Movie k) {
+void BTree::insert(Movie* k) {
     if (root == NULL) {
         root = new TreeNode(t, true);
-        root->keys[0] = &k;
+        root->keys[0] = k;
         root->n = 1;
     } 
     else {
@@ -155,7 +156,7 @@ void BTree::insert(Movie k) {
             s->splitChild(0, root);
     
             int i = 0;
-            if (s->keys[0]->getRank() < k.getRank()) {
+            if (s->keys[0]->getRank() < k->getRank()) {
                 i++;
             }
             s->C[i]->insertNonFull(k);
@@ -168,10 +169,11 @@ void BTree::insert(Movie k) {
     }
 }
 
-Movie* BTree::getLast() {
+vector<Movie*> BTree::getLast() {
     if (root != NULL) {
-        return root->traverseGetLast();
+        return root->getMovieRecs();
     }
 
-    return NULL;
+    vector<Movie*> noMovies;
+    return noMovies;
 }
