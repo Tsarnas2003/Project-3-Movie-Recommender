@@ -17,7 +17,7 @@
 
 class MaxHeap {
 private:
-    vector<Movie> movies;
+    vector<Movie> movieList;
     int size;
     int capacity;
 
@@ -25,12 +25,22 @@ public:
     MaxHeap(int capacity) {
         this->size = 0;
         this->capacity = capacity;
-        this->movies.resize(capacity);
-
+        this->movieList.resize(capacity);
 
     }
 
-    void buildMaxHeap(vector<Movie> inputMovies);
+    void buildMaxHeap(vector<Movie>& inputMovies);
+    void insert(Movie& movie);
+    Movie top();
+    Movie pop();
+    void heapifyDown(int index);
+    void heapifyUp(int index);
+    void print();
+
+
+
+
+
 
 
 };
