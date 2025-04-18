@@ -111,4 +111,17 @@ void MaxHeap::print() {
 
 
 
+vector<Movie> MaxHeap :: getBestRanks() {
+    vector<Movie> bestRanks;
+    int highestRank = movieList[0].getRank();
+
+    while(movieList[0].getRank() == highestRank) {
+        bestRanks.push_back(pop());
+    }
+
+    return bestRanks;
+}
+
+
+
 

@@ -10,4 +10,6 @@ add_executable(Main
     src/Movie.cpp
     src/BTree.h
     src/BTree.cpp
+    src/MaxHeap.cpp
+    src/MaxHeap.h
 )

@@ -36,6 +36,8 @@ public:
     void heapifyDown(int index);
     void heapifyUp(int index);
     void print();
+    vector<Movie> getBestRanks();
+
 
 
 
