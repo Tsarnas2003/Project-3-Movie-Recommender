@@ -19,6 +19,11 @@ class Movie {
         int rank;
 
     public:
+        Movie() {
+            title = " ";
+            year = " ";
+
+        };
         Movie(string title, string year, vector<string> genres, int runtime, bool isAdult, string type);
 
         string getTitle();
@@ -26,6 +31,7 @@ class Movie {
         set<string> getGenres();
         int getRuntime();
         bool getIsAdult();
+        void clearRank();
         string getType();
         
         int getRank();

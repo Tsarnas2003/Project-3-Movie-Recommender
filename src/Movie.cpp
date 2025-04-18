@@ -42,6 +42,11 @@ void Movie::addRank(int n) {
     rank += n;
 }
 
+void Movie::clearRank() {
+    rank = 0;
+}
+
+
 void Movie::updateRank(set<string> inputGenres, string inputYear, string inputIsAdult, string inputRuntime, string inputType) 
 {
     const int CURRENT_YEAR = 2025;
