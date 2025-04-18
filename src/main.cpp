@@ -9,6 +9,7 @@
 
 #include "Movie.h"
 #include "BTree.h"
+#include "Maxheap.h"
 
 using namespace std;
 
@@ -52,7 +53,30 @@ int main()
         Movie("Big Hero 6", "2014", { "Animation", "Action", "Adventure" }, 102, false),
         Movie("The Social Network", "2010", { "Biography", "Drama" }, 120, true),
         Movie("WALL-E", "2008", { "Animation", "Adventure", "Family" }, 98, false),
-        Movie("The Avengers", "2012", { "Action", "Adventure", "Sci-Fi" }, 143, true)
+        Movie("The Avengers", "2012", { "Action", "Adventure", "Sci-Fi" }, 143, true),
+        Movie("The Lion King 2: Simba's Pride", "1998", { "Animation", "Drama", "Adventure" }, 81, false),
+        Movie("The Dark Knight Rises", "2012", { "Action", "Crime", "Drama" }, 164, true),
+        Movie("The Hobbit: An Unexpected Journey", "2012", { "Adventure", "Fantasy" }, 169, true),
+        Movie("Spider-Man: Into the Spider-Verse", "2018", { "Animation", "Action", "Sci-Fi" }, 117, false),
+        Movie("The Chronicles of Narnia: The Lion, the Witch and the Wardrobe", "2005", { "Adventure", "Family", "Fantasy" }, 143, true),
+        Movie("Avatar", "2009", { "Action", "Adventure", "Sci-Fi" }, 162, true),
+        Movie("Frozen II", "2019", { "Animation", "Adventure", "Fantasy" }, 103, false),
+        Movie("The Incredibles 2", "2018", { "Animation", "Action", "Adventure" }, 118, false),
+        Movie("The Silence of the Lambs", "1991", { "Crime", "Drama", "Thriller" }, 118, true),
+        Movie("Toy Story 4", "2019", { "Animation", "Adventure", "Comedy" }, 100, false),
+        Movie("Jurassic World", "2015", { "Action", "Adventure", "Sci-Fi" }, 124, true),
+        Movie("Harry Potter and the Sorcerer's Stone", "2001", { "Adventure", "Fantasy" }, 152, true),
+        Movie("The Grand Budapest Hotel", "2014", { "Comedy", "Drama", "Crime" }, 99, false),
+        Movie("Mad Max: Fury Road", "2015", { "Action", "Adventure", "Sci-Fi" }, 120, true),
+        Movie("The Princess Bride", "1987", { "Adventure", "Comedy", "Fantasy" }, 98, false),
+        Movie("Guardians of the Galaxy", "2014", { "Action", "Adventure", "Comedy" }, 121, true),
+        Movie("Star Wars: The Empire Strikes Back", "1980", { "Action", "Adventure", "Sci-Fi" }, 124, true),
+        Movie("Back to the Future", "1985", { "Adventure", "Comedy", "Sci-Fi" }, 116, true),
+        Movie("A Beautiful Mind", "2001", { "Biography", "Drama" }, 135, true),
+        Movie("The Revenant", "2015", { "Adventure", "Drama", "Thriller" }, 156, true),
+        Movie("The Pursuit of Happyness", "2006", { "Biography", "Drama" }, 117, true),
+        Movie("Django Unchained", "2012", { "Drama", "Western" }, 165, true),
+        Movie("Shutter Island", "2010", { "Drama", "Mystery", "Thriller" }, 138, true)
     };
     
     string answer1, answer2, answer3, answer4, answer5;
@@ -84,7 +108,8 @@ int main()
     cin >> answer4;
 
     // QUESTION #5
-    cout << "5) Do you want something lighthearted or serious\n"; 
+    cout << "5) Do you want a Movie, a short Movie, or a Tv episode?\n";
+    cout << "Enter Moive, Tv, or short\n";
     // lighthearted = comedy,animation, romance, family
     // serious = drama, thriller, War, Crime, Horror
     cin >> answer5;                                            
@@ -97,21 +122,27 @@ int main()
     cout << "------------------------------------------------------------" << endl;
     cout << "\n";
     
-    BTree t(3); // switch to 50 once you get bigger data set
-    Movie finalMovie = *t.getLast();
+    //BTree t(3); // switch to 50 once you get bigger data set
+    //Movie finalMovie = *t.getLast();
+    MaxHeap testHeap(movies.size());
+
 
     // pick random movie from final list
     //srand(time(0));
     //int randIndex = rand() % finalMovies.size();
 
 
-    for(Movie m : movies) {
+    for(Movie &m : movies) {
         m.updateRank(genres, answer3, answer4, answer2, answer5);
-        t.insert(m);
+        //t.insert(m);
+
+
         //cout << m.getTitle() << " " << m.getRank() << endl;
     }
 
-    cout << "Your movie is: " + finalMovie.getTitle() + " " + to_string(finalMovie.getRank()) << endl;
+    testHeap.buildMaxHeap(movies);
+    testHeap.print();
+    //cout << "Your movie is: " + finalMovie.getTitle() + " " + to_string(finalMovie.getRank()) << endl;
 
     return 0;
 }
