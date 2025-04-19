@@ -13,3 +13,7 @@ add_executable(Main
     src/MaxHeap.cpp
     src/MaxHeap.h
 )
+
+add_executable(Parser
+        src/Database/DatabaseParser.cpp
+)
