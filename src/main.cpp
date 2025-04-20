@@ -9,6 +9,8 @@
 #include "BTree.h"
 #include "MaxHeap.h"
 
+#include "Database/DatabaseParser.cpp"
+
 using namespace std;
 
 int main() 
@@ -20,7 +22,7 @@ int main()
     cout << "Authors: Jaxon Kundrat, Tyler Tsarnas, Robert Iuhasz" << endl;
     cout << "------------------------------------------------------------" << endl;
     cout << "\n";
-
+/*
     vector<Movie> movies = {
         Movie("The Lion King", "1994", { "Animation", "Drama", "Adventure" }, 88, false, "movie"),
         Movie("Inception", "2010", { "Action", "Sci-Fi", "Thriller" }, 148, true, "movie"),
@@ -53,9 +55,9 @@ int main()
         Movie("WALL-E", "2008", { "Animation", "Adventure", "Family" }, 98, false, "movie"),
         Movie("The Avengers", "2012", { "Action", "Adventure", "Sci-Fi" }, 143, true, "movie")
     };
-
+*/
     bool again = true;
-
+    vector<Movie> movies = csvParser();
     while (again)
     {
         again = false;
@@ -128,7 +130,7 @@ int main()
         cout << "Results:" << endl;
         cout << "\n";
         
-        BTree t(3);// TODO: switch to 50 once you get bigger data set
+        BTree t(50);// TODO: switch to 50 once you get bigger data set
         MaxHeap maxHeap(movies.size());
         
         for (Movie& m : movies) {
@@ -171,8 +173,8 @@ int main()
             }
         }else if (structure == "heap"){
             maxHeap.buildMaxHeap(movies);
-            MaxHeap test = maxHeap;
-            test.print();
+            //MaxHeap test = maxHeap;
+            //test.print();
             vector<Movie> heapRecs = maxHeap.getBestRanks();
 
 

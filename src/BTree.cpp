@@ -21,7 +21,7 @@ void TreeNode::traverse() {
         if (leaf == false) {
             C[i]->traverse();
         }
-        cout << keys[i]->getTitle() << " " << keys[i]->getRank() << endl;
+        //cout << keys[i]->getTitle() << " " << keys[i]->getRank() << endl;
         movies.push_back(keys[i]);
     }
   

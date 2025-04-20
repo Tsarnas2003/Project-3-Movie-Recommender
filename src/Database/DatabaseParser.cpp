@@ -4,7 +4,7 @@
 #include <fstream>
 #include <map>
 #include <vector>
-#include <random>
+#include "../Movie.h"
 
 const int BLOCK_SIZE = 50;
 
@@ -84,7 +84,6 @@ void parseDatabase(){
     if (!inputFile || !outputFile){
         cout << "File couldn't open. Bad pathing :(" << endl;
     }
-    cout << "File open" << endl;
     string header;
     getline(inputFile,header);
 
@@ -134,18 +133,57 @@ void parseDatabase(){
     for (auto category : titleData){
         for (auto genre : category.second){
             for (auto entry :genre.second){
-                outputFile << entry.primaryTitle << "," << entry.startYear << ",{";
+                outputFile << entry.primaryTitle << "~" << entry.startYear << "~{";
                 for (auto it = entry.genres.begin(); it != entry.genres.end(); it++){
                     outputFile << *it << (next(it) == entry.genres.end() ? "" : ",");
                 }
-                outputFile << "}," << entry.runtimeMinutes << "," << entry.isAdult << "," << entry.titleType << "\n";
+                outputFile << "}~" << entry.runtimeMinutes << "~" << entry.isAdult << "~" << entry.titleType << "\n";
             }
         }
     }
     return;
 }
 
+vector<Movie> csvParser(){
+    vector<Movie> movies;
+    string path = "src/Database/Database.csv";
+    ifstream csv(path);
+    if(!csv.is_open()){
+        cout << "Bad pathing :(" << endl;
+    }
+    string line;
+    while (getline(csv,line)){
+        string title, year, genres, runtime, adult, type;
+        stringstream ss(line);
+        getline(ss, title, '~');
+        getline(ss, year, '~');
+        getline(ss, genres, '~');
+        getline(ss, runtime, '~');
+        getline(ss, adult, '~');
+        getline(ss, type);
+        if (genres.front() == '{' && genres.back() == '}'){
+            genres = genres.substr(1, genres.size() - 2);
+        }
+        stringstream genresplitter(genres);
+        string genre;
+        set<string> genreset;
+        while (getline(genresplitter,genre,',')){
+            genreset.insert(genre);
+        }
+        Movie movie;
+        movie.setTitle(title);
+        movie.setYear(year);
+        movie.setGenres(genreset);
+        movie.setRuntime(stoi(runtime));
+        movie.setAdult(adult == "0" ? 0 : 1);
+        movie.setType(type);
+        movies.push_back(movie);
+    }
+    return movies;
+}
+/*
 int main(){
-    parseDatabase();
+    csvParser();
     return 0;
 }
+*/

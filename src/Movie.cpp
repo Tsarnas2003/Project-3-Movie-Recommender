@@ -46,6 +46,29 @@ void Movie::clearRank() {
     rank = 0;
 }
 
+void Movie::setTitle(string title) {
+    this->title = title;
+}
+
+void Movie::setYear(std::string year) {
+    this->year = year;
+}
+
+void Movie::setGenres(set<string> genres) {
+    this->genres = genres;
+}
+
+void Movie::setRuntime(int runtime) {
+    this->runtime = runtime;
+}
+
+void Movie::setAdult(bool isAdult) {
+    this->isAdult = isAdult;
+}
+
+void Movie::setType(std::string type) {
+    this->type = type;
+}
 
 void Movie::updateRank(set<string> inputGenres, string inputYear, string inputIsAdult, string inputRuntime, string inputType) 
 {

@@ -16,4 +16,5 @@ add_executable(Main
 
 add_executable(Parser
         src/Database/DatabaseParser.cpp
+        src/Movie.cpp
 )

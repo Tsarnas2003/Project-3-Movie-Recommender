@@ -33,6 +33,13 @@ class Movie {
         bool getIsAdult();
         void clearRank();
         string getType();
+
+        void setTitle(string title);
+        void setYear(string year);
+        void setGenres(set<string> genres);
+        void setRuntime(int runtime);
+        void setAdult(bool isAdult);
+        void setType(string type);
         
         int getRank();
         void addRank(int n);
