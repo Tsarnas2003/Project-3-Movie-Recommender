@@ -4,6 +4,7 @@
 #include <set>
 #include <algorithm>
 #include <sstream>
+#include <chrono>
 
 #include "Movie.h"
 #include "BTree.h"
@@ -22,40 +23,7 @@ int main()
     cout << "Authors: Jaxon Kundrat, Tyler Tsarnas, Robert Iuhasz" << endl;
     cout << "------------------------------------------------------------" << endl;
     cout << "\n";
-/*
-    vector<Movie> movies = {
-        Movie("The Lion King", "1994", { "Animation", "Drama", "Adventure" }, 88, false, "movie"),
-        Movie("Inception", "2010", { "Action", "Sci-Fi", "Thriller" }, 148, true, "movie"),
-        Movie("Finding Nemo", "2003", { "Animation", "Comedy", "Family" }, 100, false, "movie"),
-        Movie("The Dark Knight", "2008", { "Action", "Crime", "Drama" }, 152, true, "movie"),
-        Movie("Frozen", "2013", { "Animation", "Family", "Fantasy" }, 102, false, "movie"),
-        Movie("The Matrix", "1999", { "Action", "Sci-Fi" }, 136, true, "movie"),
-        Movie("Up", "2009", { "Animation", "Adventure", "Comedy" }, 96, false, "movie"),
-        Movie("Titanic", "1997", { "Drama", "Romance" }, 195, true, "movie"),
-        Movie("Shrek", "2001", { "Animation", "Comedy", "Fantasy" }, 90, false, "movie"),
-        Movie("Avengers: Endgame", "2019", { "Action", "Adventure", "Sci-Fi" }, 181, true, "movie"),
-        Movie("Monsters, Inc.", "2001", { "Animation", "Adventure", "Comedy" }, 92, false, "movie"),
-        Movie("The Godfather", "1972", { "Crime", "Drama" }, 175, true, "movie"),
-        Movie("Inside Out", "2015", { "Animation", "Adventure", "Drama" }, 95, false, "movie"),
-        Movie("Jurassic Park", "1993", { "Action", "Adventure", "Sci-Fi" }, 127, true, "movie"),
-        Movie("The Incredibles", "2004", { "Animation", "Action", "Family" }, 115, false, "movie"),
-        Movie("Gladiator", "2000", { "Action", "Adventure", "Drama" }, 155, true, "movie"),
-        Movie("Coco", "2017", { "Animation", "Adventure", "Family" }, 105, false, "movie"),
-        Movie("The Shawshank Redemption", "1994", { "Drama" }, 142, true, "movie"),
-        Movie("Moana", "2016", { "Animation", "Adventure", "Comedy" }, 107, false, "movie"),
-        Movie("The Prestige", "2006", { "Drama", "Mystery", "Sci-Fi" }, 130, true, "movie"),
-        Movie("Zootopia", "2016", { "Animation", "Adventure", "Comedy" }, 108, false, "movie"),
-        Movie("Interstellar", "2014", { "Adventure", "Drama", "Sci-Fi" }, 169, true, "movie"),
-        Movie("Tangled", "2010", { "Animation", "Adventure", "Comedy" }, 100, false, "movie"),
-        Movie("Forrest Gump", "1994", { "Drama", "Romance" }, 142, true, "movie"),
-        Movie("Ratatouille", "2007", { "Animation", "Comedy", "Family" }, 111, false, "movie"),
-        Movie("Pulp Fiction", "1994", { "Crime", "Drama" }, 154, true, "movie"),
-        Movie("Big Hero 6", "2014", { "Animation", "Action", "Adventure" }, 102, false, "movie"),
-        Movie("The Social Network", "2010", { "Biography", "Drama" }, 120, true, "movie"),
-        Movie("WALL-E", "2008", { "Animation", "Adventure", "Family" }, 98, false, "movie"),
-        Movie("The Avengers", "2012", { "Action", "Adventure", "Sci-Fi" }, 143, true, "movie")
-    };
-*/
+
     bool again = true;
     vector<Movie> movies = csvParser();
     while (again)
@@ -129,23 +97,22 @@ int main()
         cout << "\n------------------------------------------------------------\n" << endl;
         cout << "Results:" << endl;
         cout << "\n";
-        
-        BTree t(50);// TODO: switch to 50 once you get bigger data set
-        MaxHeap maxHeap(movies.size());
-        
-        for (Movie& m : movies) {
-            m.updateRank(genres, answer3, answer4, answer2, answer5);
-            if(structure == "tree") {
+
+        if(structure == "Tree") {
+            auto start = chrono::high_resolution_clock::now();
+            BTree t(50);
+            for (Movie& m : movies) {
+                m.updateRank(genres, answer3, answer4, answer2, answer5);
                 t.insert(new Movie(m));
             }
-        }
-
-        if(structure == "tree") {
             t.traverse();
             vector<Movie*> bTreeRecs = t.getLast();
+            auto end = chrono::high_resolution_clock::now();
             string another;
 
             // if there are other movies with the same maxRank, ask another question
+            chrono::duration<double,milli> duration = end - start;
+            cout << "Tree build and access time is: " << duration.count() << "ms." << endl;
             for (int i = 0; i < bTreeRecs.size(); i++) {
                 cout << "Your movie is: " << bTreeRecs[i]->getTitle() << endl;
                 cout << "With rank: " << bTreeRecs[i]->getRank() << endl;
@@ -171,15 +138,19 @@ int main()
             for(Movie& m : movies) {
                 m.clearRank();
             }
-        }else if (structure == "heap"){
+        }else if (structure == "Heap"){
+            auto start = chrono::high_resolution_clock::now();
+            MaxHeap maxHeap(movies.size());
+            for (Movie& m : movies) {
+                m.updateRank(genres, answer3, answer4, answer2, answer5);
+            }
             maxHeap.buildMaxHeap(movies);
-            //MaxHeap test = maxHeap;
-            //test.print();
             vector<Movie> heapRecs = maxHeap.getBestRanks();
-
-
+            auto end = chrono::high_resolution_clock::now();
+            chrono::duration<double,milli> duration = end - start;
 
             cout << "\n";
+            cout << "Heap build and access time is: " << duration.count() << "ms." << endl;
 
             string another;
 
@@ -210,10 +181,7 @@ int main()
                 m.clearRank();
             }
         }
-
-        }
-
-
+    }
 
     return 0;
 }

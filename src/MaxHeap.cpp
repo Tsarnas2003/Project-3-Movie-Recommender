@@ -26,8 +26,6 @@ void MaxHeap::buildMaxHeap(vector<::Movie>& inputMovies) {
 }
 
 
-
-
 void MaxHeap::insert(Movie& movie) {
     if(size == capacity) {
         capacity *= 2;
